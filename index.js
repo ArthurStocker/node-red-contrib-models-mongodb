@@ -1,7 +1,7 @@
 // index.js
 module.exports = {
-  FlowNode: require('./FlowNode'),
-  CredentialNode: require('./CredentialNode'),
-  Settings: require('./Settings'),
-  LibraryItem: require('./LibraryItem')
+  FlowNode: require('./nodes'),
+  CredentialNode: require('./credentials'),
+  Settings: require('./settings'),
+  LibraryItem: require('./library')
 };

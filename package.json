@@ -1,6 +1,5 @@
 {
     "name": "node-red-contrib-models-mongodb",
-    "type": "module",
     "engines": {
         "node": ">=14.0.0"
     },
