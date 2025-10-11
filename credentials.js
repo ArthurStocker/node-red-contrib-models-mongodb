@@ -2,17 +2,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CredentialSchema = new Schema({
-  appname: { type: String, required: true },                 // e.g. "nodered-instance-1"
-  owner: { type: String, required: true },                   // Keycloak user ID
-  nodeId: { type: String, required: true },                  // Node-RED node ID
-  credentials: { type: Schema.Types.Mixed, required: true }, // Encrypted credentials
-  rev: { type: String },                                     // Optional: link to flow snapshot
-  state: { type: String, default: 'pending commit' },        // lifecycle state: draft, committed, etc.
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  nodeId: { type: String, required: true },                 // Node-RED node ID
+  appname: { type: String, required: true },                // e.g. "nodered-instance-1"
+  '__version' : {
+    ver: { type: String },                                  // semantic version or snapshot ID
+    rev: { type: String, required: true },                  // shared across all nodes in a snapshot
+    state: { type: String, default: 'pending commit' }      // lifecycle state: draft, committed, etc.
+  },
+  '__attributes': {
+    created: { type: Date, default: Date.now },
+    createdBy: { type: String },                            // e.g. User ID
+    modified: { type: Date, default: Date.now },
+    modifiedBy: { type: String }                            // e.g. User ID
+  },
+  credentials: { type: Schema.Types.Mixed, required: true } // Encrypted credentials
 });
 
-CredentialSchema.index({ appname: 1, owner: 1, nodeId: 1 }, { unique: true });
+CredentialSchema.index({ appname: 1, '__attributes.createdBy': 1, nodeId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Credentials', CredentialSchema);
 
